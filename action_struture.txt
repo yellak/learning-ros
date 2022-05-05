@@ -1,3 +1,7 @@
+_________________________
+Goal
+
+
 pose:
     header:
         stamp:
@@ -14,3 +18,30 @@ pose:
             y: 0.0
             z: 0.0
             w: 1.0
+
+
+_________________________
+Feedback
+
+
+current_pose:
+  header:
+    stamp:
+      sec: 0
+      nanosec: 0
+    frame_id: ''
+  pose:
+    position:
+      x: 234.0
+      y: 169.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+navigation_time:
+  sec: 0
+  nanosec: 0
+number_of_recoveries: 0
+distance_remaining: 0.0
