@@ -42,11 +42,12 @@ class MinimalActionClient(Node):
             self.get_logger().info('Goal failed with status: {0}'.format(status))
 
 
-    def send_goal(self, x, y):
+    def send_goal(self, name, x, y):
         self.get_logger().info('Waiting for action server...')
         self._action_client.wait_for_server()
 
         goal_msg = NavigateToPose.Goal()
+        goal_msg.pose.header.frame_id = name
         goal_msg.pose.pose.position.x = x
         goal_msg.pose.pose.position.y = y
 
@@ -75,7 +76,7 @@ def test_cancelation_and_new_goal(args=None):
     rclpy.init(args=args)
 
     action_client = MinimalActionClient()
-    action_client.send_goal(250.0, 65.0)
+    action_client.send_goal('wall-e', 250.0, 65.0)
 
     start_time = time.time()
 
@@ -90,7 +91,7 @@ def test_cancelation_and_new_goal(args=None):
             cancel_sent = True
         if time.time()-start_time > time_to_send_new_goal and not new_goal_sent:
             print("Sending new goal...")
-            action_client.send_goal(70.0, 180.0)
+            action_client.send_goal('wall-e', 70.0, 180.0)
             new_goal_sent = True
         rclpy.spin_once(action_client, timeout_sec=1)
 
@@ -98,7 +99,7 @@ def test_new_goal_with_another_running():
     rclpy.init()
 
     action_client = MinimalActionClient()
-    action_client.send_goal(250.0, 65.0)
+    action_client.send_goal('wall-e', 250.0, 65.0)
 
     start_time = time.time()
 
@@ -107,10 +108,10 @@ def test_new_goal_with_another_running():
     while True:
         if time.time()-start_time > time_to_send_new_goal and not new_goal_sent:
             print("Sending new goal...")
-            action_client.send_goal(70.0, 180.0)
+            action_client.send_goal('wall-e', 70.0, 180.0)
             new_goal_sent = True
         rclpy.spin_once(action_client, timeout_sec=1)
 
 
 if __name__ == '__main__':
-    test_new_goal_with_another_running()
+    test_cancelation_and_new_goal()
